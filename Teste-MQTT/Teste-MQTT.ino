@@ -1,40 +1,44 @@
+/* 
+ *  Projeto: controle e monitoramento de periféricos no ESP32 
+ *           via MQTT com app MQTT DASH
+ *  Autores: Pedro Bertoleti e FilipeFlop
+ *  Data: Fevereiro/2019
+ */
 #include <DHT.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
-  
-/* Definições do RELE */
-#define LED        23
-#define LED1       22
+ 
+ 
+/* Definições do LED */
+#define PIN_LED     25
  
 /* Definicoes do sensor DHT22 */
-#define DHT22PIN   16     //GPIO que está ligado o pino de dados do sensor
+#define DHTPIN 26     //GPIO que está ligado o pino de dados do sensor
  
 //#define DHTTYPE DHT11
 #define DHTTYPE DHT22   //sensor em utilização: DHT22
 //#define DHTTYPE DHT21
  
 /* Defines do MQTT */
-#define TOPICO_SUBSCRIBE_LED           "topico_liga_desliga_led"
-#define MQTT_TOPICO_SUBSCRIBE_LED1     "topico_led1"
-#define TOPICO_PUBLISH_TEMPERATURA     "topico_sensor_temperatura"
-#define TOPICO_PUBLISH_DISTANCIA       "topico_sensor_distancia"
-#define TOPICO_PUBLISH_UMIDADE         "topico_sensor_umidade"
-#define MQTT_CLIENT                    "IoT-ESP32"     //id mqtt (para identificação de sessão)
+#define TOPICO_SUBSCRIBE_LED         "topico_liga_desliga_led"
+#define TOPICO_PUBLISH_TEMPERATURA   "topico_sensor_temperatura" 
+#define TOPICO_PUBLISH_DISTANCIA     "topico_sensor_distancia" 
+#define TOPICO_PUBLISH_UMIDADE       "topico_sensor_umidade" 
+ 
+#define ID_MQTT  "esp32_mqtt"     //id mqtt (para identificação de sessão)
                                   //IMPORTANTE: este deve ser único no broker (ou seja, 
                                   //            se um client MQTT tentar entrar com o mesmo 
                                   //            id de outro já conectado ao broker, o broker 
                                   //            irá fechar a conexão de um deles).
  
 /* Variaveis, constantes e objetos globais */
-DHT dht(DHT22PIN, DHTTYPE);
+DHT dht(DHTPIN, DHTTYPE);
  
-const char* SSID = "RVR 2,4GHz"; // SSID / nome da rede WI-FI que deseja se conectar
-const char* PASSWORD = "RodrigoValRobson2021"; // Senha da rede WI-FI que deseja se conectar
+const char* SSID = " "; // SSID / nome da rede WI-FI que deseja se conectar
+const char* PASSWORD = " "; // Senha da rede WI-FI que deseja se conectar
  
-const char* BROKER_MQTT = "dashboardiot.com.br"; //URL do broker MQTT que se deseja utilizar
+const char* BROKER_MQTT = "iot.eclipse.org"; //URL do broker MQTT que se deseja utilizar
 int BROKER_PORT = 1883; // Porta do Broker MQTT
-const char* mqttUser = "emqx_test";
-const char* mqttPassword = "emqx_test";
    
 //Variáveis e objetos globais
 WiFiClient espClient; // Cria o objeto espClient
@@ -137,26 +141,16 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length)
     /* toma ação dependendo da string recebida */
     if (msg.equals("1"))
     {
-        digitalWrite(LED, LOW);
+        digitalWrite(PIN_LED, HIGH);
         Serial.print("LED aceso mediante comando MQTT");
     }
-    if (msg.equals("1"))
-    {
-        digitalWrite(LED1, LOW);
-        Serial.print("LED aceso mediante comando MQTT");
-    }
+  
     if (msg.equals("0"))
     {
-        digitalWrite(LED, HIGH);    
-        Serial.print("LED apagado mediante comando MQTT"); 
-    }
-    if (msg.equals("0"))
-    {
-        digitalWrite(LED1, HIGH);    
+        digitalWrite(PIN_LED, LOW);    
         Serial.print("LED apagado mediante comando MQTT"); 
     }
 }
-  
  
 /* Função: reconecta-se ao broker MQTT (caso ainda não esteja conectado ou em caso de a conexão cair)
  *         em caso de sucesso na conexão ou reconexão, o subscribe dos tópicos é refeito.
@@ -169,11 +163,10 @@ void reconnectMQTT(void)
     {
         Serial.print("* Tentando se conectar ao Broker MQTT: ");
         Serial.println(BROKER_MQTT);
-        if (MQTT.connect(MQTT_CLIENT)) 
+        if (MQTT.connect(ID_MQTT)) 
         {
             Serial.println("Conectado com sucesso ao broker MQTT!");
-            MQTT.subscribe(TOPICO_SUBSCRIBE_LED);
-            MQTT.subscribe(MQTT_TOPICO_SUBSCRIBE_LED1); 
+            MQTT.subscribe(TOPICO_SUBSCRIBE_LED); 
         } 
         else
         {
@@ -229,12 +222,10 @@ void setup()
 {
     Serial.begin(115200);  
  
-    /* Configuração do pino ligado ao RELE como output 
+    /* Configuração do pino ligado ao LED como output 
        e inicialização do mesmo em LOW */
-    pinMode(LED, OUTPUT);
-    digitalWrite(LED,HIGH);
-    pinMode(LED1, OUTPUT);
-    digitalWrite(LED1,HIGH);
+    pinMode(PIN_LED, OUTPUT);
+    digitalWrite(PIN_LED,LOW);
  
     /* Inicializacao do sensor de temperatura */
     dht.begin();  

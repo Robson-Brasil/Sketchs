@@ -8,6 +8,19 @@
 #include <DHT.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
+
+const char* SSID = "RVR 2,4GHz"; // SSID / nome da rede WI-FI que deseja se conectar
+const char* PASSWORD = "RodrigoValRobson2021"; // Senha da rede WI-FI que deseja se conectar
+ 
+const char* BROKER_MQTT = "192.168.15.30"; //URL do broker MQTT que se deseja utilizar
+int BROKER_PORT = 1883; // Porta do Broker MQTT
+const char* mqttUser = "Robson Brasil";
+const char* mqttPassword = "LoboAlfa";
+   
+//Variáveis e objetos globais
+WiFiClient espClient;          // Cria o objeto espClient
+PubSubClient MQTT(espClient);  // Instancia o Cliente MQTT passando o objeto espClient
+ 
 /* Definições do RELE */
 #define RelayPin1   23  //D23
 #define RelayPin2   22  //D22
@@ -28,6 +41,28 @@
 #define SwitchPin8   4  //D4
 /* Definições do LED de Conexão do WI-FI */
 #define wifiLed      2   //D2
+
+/* Defines do MQTT */
+#define sub1  "ESP32-MinhaCasa/QuartoRobson/LigarInterruptor1"
+#define sub2  "ESP32-MinhaCasa/QuartoRobson/LigarInterruptor2"
+#define sub3  "ESP32-MinhaCasa/QuartoRobson/LigarInterruptor3"
+#define sub4  "ESP32-MinhaCasa/QuartoRobson/LigarInterruptor4"
+#define sub5  "ESP32-MinhaCasa/QuartoRobson/LigarInterruptor5"
+#define sub6  "ESP32-MinhaCasa/QuartoRobson/LigarInterruptor6"
+#define sub7  "ESP32-MinhaCasa/QuartoRobson/LigarInterruptor7"
+#define sub8  "ESP32-MinhaCasa/QuartoRobson/LigarInterruptor8"
+
+#define pub9   "ESP32-MinhaCasa/QuartoRobson/Temperatura"
+#define pub10  "ESP32-MinhaCasa/QuartoRobson/Umidade"
+#define pub11  "ESP32-MinhaCasa/QuartoRobson/Luminosidade"
+
+#define MQTT_CLIENT              "IoTESP32"     //id mqtt (para identificação de sessão)
+                                  //IMPORTANTE: este deve ser único no broker (ou seja, 
+                                  //            se um client MQTT tentar entrar com o mesmo 
+                                  //            id de outro já conectado ao broker, o broker 
+                                  //            irá fechar a conexão de um deles).
+ 
+
 /* Definições do Estado do RELÉ */
 int toggleState_1  = 0; //Defina o número inteiro para lembrar o estado de alternância para o Relé 1
 int toggleState_2  = 0; //Defina o número inteiro para lembrar o estado de alternância para o Relé 2
@@ -226,48 +261,9 @@ void without_internet(){
       relayOnOff(8);
     }
 }
-/* Defines do MQTT */
-#define TOPICO_SUBSCRIBE_RELE1  "topico_liga_desliga_rele1"
-#define TOPICO_SUBSCRIBE_RELE2  "topico_liga_desliga_rele2"
-#define TOPICO_SUBSCRIBE_RELE3  "topico_liga_desliga_rele3"
-#define TOPICO_SUBSCRIBE_RELE4  "topico_liga_desliga_rele4"
-#define TOPICO_SUBSCRIBE_RELE5  "topico_liga_desliga_rele5"
-#define TOPICO_SUBSCRIBE_RELE6  "topico_liga_desliga_rele6"
-#define TOPICO_SUBSCRIBE_RELE7  "topico_liga_desliga_rele7"
-#define TOPICO_SUBSCRIBE_RELE8  "topico_liga_desliga_rele8"
 
-#define MQTT_TOPICO_SUBSCRIBE_RELE1  "topico_rele1"
-#define MQTT_TOPICO_SUBSCRIBE_RELE2  "topico_rele2"
-#define MQTT_TOPICO_SUBSCRIBE_RELE3  "topico_rele3"
-#define MQTT_TOPICO_SUBSCRIBE_RELE4  "topico_rele4"
-#define MQTT_TOPICO_SUBSCRIBE_RELE5  "topico_rele5"
-#define MQTT_TOPICO_SUBSCRIBE_RELE6  "topico_rele6"
-#define MQTT_TOPICO_SUBSCRIBE_RELE7  "topico_rele7"
-#define MQTT_TOPICO_SUBSCRIBE_RELE8  "topico_rele8"
-
-#define TOPICO_PUBLISH_TEMPERATURA   "topico_sensor_temperatura"
-#define TOPICO_PUBLISH_LUMINOSIDADE  "topico_sensor_luminosidade"
-#define TOPICO_PUBLISH_UMIDADE       "topico_sensor_umidade"
-#define MQTT_CLIENT                  "IoTESP32"     //id mqtt (para identificação de sessão)
-                                  //IMPORTANTE: este deve ser único no broker (ou seja, 
-                                  //            se um client MQTT tentar entrar com o mesmo 
-                                  //            id de outro já conectado ao broker, o broker 
-                                  //            irá fechar a conexão de um deles).
- 
 /* Variaveis, constantes e objetos globais */
 DHT dht(DHT22PIN, DHTTYPE);
- 
-const char* SSID = "RVR 2,4GHz"; // SSID / nome da rede WI-FI que deseja se conectar
-const char* PASSWORD = "RodrigoValRobson2021"; // Senha da rede WI-FI que deseja se conectar
- 
-const char* BROKER_MQTT = "internetdascoisas.ddns.net"; //URL do broker MQTT que se deseja utilizar
-int BROKER_PORT = 1883; // Porta do Broker MQTT
-const char* mqttUser = "RobsonBrasil";
-const char* mqttPassword = "@Lobo#Alfa@";
-   
-//Variáveis e objetos globais
-WiFiClient espClient;          // Cria o objeto espClient
-PubSubClient MQTT(espClient);  // Instancia o Cliente MQTT passando o objeto espClient
  
 /* Prototypes */
 float faz_leitura_temperatura(void);
@@ -460,23 +456,15 @@ void reconnectMQTT(void)
         if (MQTT.connect(MQTT_CLIENT)) 
         {
             Serial.println("Conectado com sucesso ao broker MQTT!");
-            MQTT.subscribe(TOPICO_SUBSCRIBE_RELE1);
-            MQTT.subscribe(TOPICO_SUBSCRIBE_RELE2);
-            MQTT.subscribe(TOPICO_SUBSCRIBE_RELE3);
-            MQTT.subscribe(TOPICO_SUBSCRIBE_RELE4);
-            MQTT.subscribe(TOPICO_SUBSCRIBE_RELE5);
-            MQTT.subscribe(TOPICO_SUBSCRIBE_RELE6);
-            MQTT.subscribe(TOPICO_SUBSCRIBE_RELE7);
-            MQTT.subscribe(TOPICO_SUBSCRIBE_RELE8);
+            MQTT.subscribe(sub1);
+            MQTT.subscribe(sub2);
+            MQTT.subscribe(sub3);
+            MQTT.subscribe(sub4);
+            MQTT.subscribe(sub5);
+            MQTT.subscribe(sub6);
+            MQTT.subscribe(sub7);
+            MQTT.subscribe(sub8);
 
-            MQTT.subscribe(MQTT_TOPICO_SUBSCRIBE_RELE1);
-            MQTT.subscribe(MQTT_TOPICO_SUBSCRIBE_RELE2);
-            MQTT.subscribe(MQTT_TOPICO_SUBSCRIBE_RELE3);
-            MQTT.subscribe(MQTT_TOPICO_SUBSCRIBE_RELE4);
-            MQTT.subscribe(MQTT_TOPICO_SUBSCRIBE_RELE5);
-            MQTT.subscribe(MQTT_TOPICO_SUBSCRIBE_RELE6);
-            MQTT.subscribe(MQTT_TOPICO_SUBSCRIBE_RELE7);
-            MQTT.subscribe(MQTT_TOPICO_SUBSCRIBE_RELE8);
         } 
         else
         {
@@ -598,8 +586,9 @@ void loop()
     sprintf(umidade_str,"%.2f", faz_leitura_umidade());
  
     /*  Envia as strings ao dashboard MQTT */
-    MQTT.publish(TOPICO_PUBLISH_TEMPERATURA, temperatura_str);
-    MQTT.publish(TOPICO_PUBLISH_UMIDADE, umidade_str);
+    MQTT.publish(pub9, temperatura_str);
+    MQTT.publish(pub10, umidade_str);
+//    MQTT.publish(pub10, analogRead(LDR));
    
     /* keep-alive da comunicação com broker MQTT */
     MQTT.loop();
