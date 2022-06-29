@@ -1,20 +1,19 @@
 #include <WiFi.h>
 
-const char* ssid     = "MOTOROLA-A7CE9";
-const char* password = "3104e43ece65b0885fa9";
+const char* ssid     = "RVR 2,4GHz";
+const char* password = "RodrigoValRobson2021";
 
 WiFiServer server(80);
 
-#define ATUADOR1 21
-#define ATUADOR2 12
-#define ATUADOR3 14
-#define ATUADOR4 27
-#define ATUADOR5 26
-#define ATUADOR6 25
-#define ATUADOR7 33
-#define ATUADOR8 32
-#define ATUADOR9 19
-#define ATUADOR10 2
+#define ATUADOR1 23
+#define ATUADOR2 22
+#define ATUADOR3 21
+#define ATUADOR4 19
+#define ATUADOR5 18
+#define ATUADOR6  5
+#define ATUADOR7 25
+#define ATUADOR8 26
+
 
 bool Estado_Do_Atuador1 = LOW;
 bool Estado_Do_Atuador2 = LOW;
@@ -24,8 +23,6 @@ bool Estado_Do_Atuador5 = LOW;
 bool Estado_Do_Atuador6 = LOW;
 bool Estado_Do_Atuador7 = LOW;
 bool Estado_Do_Atuador8 = LOW;
-bool Estado_Do_Atuador9 = LOW;
-bool Estado_Do_Atuador10 = LOW;
 
 void setup()
 {
@@ -38,8 +35,7 @@ void setup()
     pinMode(ATUADOR6, OUTPUT);
     pinMode(ATUADOR7, OUTPUT);
     pinMode(ATUADOR8, OUTPUT);
-    pinMode(ATUADOR9, OUTPUT);
-    pinMode(ATUADOR10, OUTPUT);
+
     delay(10);
 
     // We start by connecting to a WiFi network
@@ -99,8 +95,6 @@ void loop(){
             client.print("<a href=\"/B1\">BOTAO 6 </a> </br></br></br>");
             client.print("<a href=\"/B2\">BOTAO 7 </a> </br></br></br>");
             client.print("<a href=\"/B3\">BOTAO 8 </a> </br></br></br>");
-            client.print("<a href=\"/B4\">BOTAO 9 </a> </br></br></br>");
-            client.print("<a href=\"/B5\">BOTAO10 </a> </br></br></br>");
             
             
              // A resposta HTTP termina com outra linha em branco:
@@ -196,30 +190,12 @@ digitalWrite(ATUADOR8, LOW);
 Estado_Do_Atuador8 = LOW;
 }
 }
-if (currentLine.endsWith("GET /B4")) {
- 
-if (Estado_Do_Atuador9 == LOW) {
-digitalWrite(ATUADOR9, HIGH);
-Estado_Do_Atuador9 = HIGH;
-} else {
-digitalWrite(ATUADOR9, LOW);
-Estado_Do_Atuador9 = LOW;
-}
-}
-if (currentLine.endsWith("GET /B5")) {
- 
-if (Estado_Do_Atuador10 == LOW) {
-digitalWrite(ATUADOR10, HIGH);
-Estado_Do_Atuador10 = HIGH;
-} else {
-digitalWrite(ATUADOR10, LOW);
-Estado_Do_Atuador10 = LOW;
-}
-}
+
 }
     }
+
+  }
     // Termina a conexão com o cliente
     client.stop();
     Serial.println("Cliente Desconectado");
     }
-  }
