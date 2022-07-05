@@ -1,0 +1,116 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=auto">
+  <title>ESPRelé - Configuração</title>
+  <style type="text/css">
+    body {
+      font-family: Verdana, Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #ffffff;
+      margin: 5px;
+      background: #d0d0d0;
+      min-width: 400px;
+      max-width: 600px;
+     }
+    h1 {
+      font-size: 20px;
+      text-align: center;
+      color: rgb(60, 153, 234);
+      background: #787878;
+      border-radius: 7px 7px 0px 0px;
+      padding: 7px 4px 0px 4px;
+      margin: 0px;
+    }
+    h2 {
+      font-size: 12px;
+      text-align: left;
+      color: rgb(60, 153, 234);
+      background: #787878;
+      padding: 4px 8px 4px 8px;
+      margin: 0px;
+      border: #787878 solid 2px;
+    }
+    h3 {
+      font-size: 12px;
+      text-align: left;
+      font-weight: normal;
+      background: #ffffff;
+      padding: 7px;
+      margin: 0px;
+      border: #787878 solid 2px;
+      border-radius: 0px 0px 7px 7px;
+    }
+    table {
+      width: 100%;
+    }
+    th {
+      font-size: 11px;
+      background: rgb(60, 153, 234);
+      text-align: right;
+      padding: 5px;
+      border-radius: 3px 0px 0px 3px;
+      width: 25%;
+    }
+    td {
+      font-size: 11px;
+      background: #787878;
+      padding: 5px;
+      border-radius: 0px 3px 3px 0px;
+    }
+    a {
+      font-size: 12px;
+      color: #ffffff;
+    }
+    .footer {
+      font-size: 11px;
+      background: rgb(60, 153, 234);
+      text-align: center;
+      padding: 5px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <h1>ESPRelé - Configuração</h1>
+  <h2>
+    <a href="/">Home</a> |
+    <a href="/relay">Relé</a> |
+    <a href="/fileList">Arquivos</a> |
+    <a href="/config">Configuração</a> |
+    <a href="/reboot" onclick="return confirm('Reiniciar ESPRelé?')">Reiniciar</a>
+  </h2>
+  <h3>
+  <form name="config" action="/configSave" method="post">
+  <table>
+    <tr>
+      <th>Referência</th>
+      <td><input type="text" name="reference" value="#reference#" size="25" maxlength="35"></td>
+    </tr>
+    <tr>
+      <th>Autenticação</th>
+      <td>
+        <input type="checkbox" name="aut" value="1"#aut#> Sempre solicitar autenticação.
+      </td>
+    </tr>
+    <tr>
+      <th>SoftAP</th>
+      <td>
+        <input type="checkbox" name="ap" value="1"#ap#> Modo SoftAP sempre ativo.
+      </td>
+    </tr>
+    <tr>
+      <th rowspan="2">Wi-Fi</th>
+      <td colspan="2">SSID: <input type="text" name="ssid" value="#ssid#" size="25" maxlength="35"></td>
+    </tr>
+    <tr>
+      <td colspan="2">Senha: <input id="pwd" type="password" name="pwd" size="20" maxlength="35"></td>
+    </tr>
+    <tr>
+      <th colspan="3" class="footer"><input id="save" type="submit" value="Gravar"></th>
+    </tr>
+  </table>
+  </form>
+  </h3>
+</body>
+</html>

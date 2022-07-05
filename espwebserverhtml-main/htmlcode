@@ -1,0 +1,29 @@
+<!DOCTYPE html><html>
+<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+<link rel=\"icon\" href=\"data:,\">
+
+<style>html { font-family: Helvetica; display: inline-block; margin: 10px auto; text-align: center;}
+</style></head>
+
+<body><h1> <FONT SIZE='5' COLOR='red'> Web Server</h1>
+  
+  <p> <FONT SIZE='5' COLOR=#3498DB> Out 1 - State " + output1State + "</p>
+    
+    <p><a   href=\"/1/on\"><button style='width:100px; height:50px; background-color: #4CAF50; border: none; color: white; padding: 16px 35px;font-size: 20px; margin: 2px; cursor: pointer' >ON</button></a></p>
+  
+  <p><a href=\"/1/off\"><button style='width:100px; height:50px; background-color: #E74C3C; border: none; color: white; padding: 16px 20px;font-size: 20px; margin: 2px; cursor: pointer' >OFF</button></a></p>
+  
+
+  <p> <FONT SIZE='5' COLOR=#3498DB> Out 2 - State " + output2State + "</p>
+    
+  <p><a href=\"/2/on\"><button style='width:100px; height:50px; background-color: #4CAF50; border: none; color: white; padding: 16px 35px;font-size: 20px; margin: 2px; cursor: pointer' >ON</button></a></p>
+  
+  <p><a href=\"/2/off\"><button style='width:100px; height:50px; background-color: #E74C3C; border: none; color: white; padding: 16px 20px;font-size: 20px; margin: 2px; cursor: pointer' >OFF</button></a></p>
+  
+  </body></html>
+  
+  
+            
+           
+    
+          
