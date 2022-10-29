@@ -6,6 +6,9 @@ Instagram:  Solutionsfk_official
 Facebook:   Fk Solutions
 */
 
+
+
+
 /*** INCLUSÃO DE BIBLIOTECAS DO SISTEMA********************************************************************************************************************/
 
 // Biblioteca comunicação WIFI e WIFI MANAGER
@@ -14,3 +17,7 @@ Facebook:   Fk Solutions
 #include <WiFi.h>
 #include <DNSServer.h>
 #include <WebServer.h>
+
+
+
+  

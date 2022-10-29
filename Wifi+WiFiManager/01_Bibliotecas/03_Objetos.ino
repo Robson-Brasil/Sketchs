@@ -10,7 +10,18 @@ unsigned long currentTime = millis();
 unsigned long previousTime = 0; 
 //Defina o tempo limite em milissegundos 
 const long timeoutTime = 2000;
+
+
+
+
 // Reset Wifi Manager
 WiFiManager wifiManager;
+
+
+
+
+ 
+
+
 // Status para controle de Led
-int Status_Led = LOW;
+int Status_Led = LOW; 

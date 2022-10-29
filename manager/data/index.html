@@ -1,0 +1,20 @@
+<!DOCTYPE HTML><html>
+<head>
+  <title>Device</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+</head>
+<body>
+  <h2>device</h2>
+  <label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="2" %STATE%><span class="slider"></span></label>
+<script>function toggleCheckbox(element) {
+  var xhr = new XMLHttpRequest();
+  if(element.checked){ xhr.open("GET", "/update?state=1", true); }
+  else { xhr.open("GET", "/update?state=0", true); }
+  xhr.send();
+}
+</script>
+</body>
+</html>

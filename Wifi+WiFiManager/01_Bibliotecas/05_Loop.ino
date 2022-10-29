@@ -1,10 +1,16 @@
 void loop () {
 
+
+
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
   WiFiClient client = server.available();    // Ouça os clientes que chegam
    if (client) {                             // Se um novo cliente se conectar
     currentTime = millis();
     previousTime = currentTime;
-    Serial.println("Novo Cliente");          // imprimir uma mensagem na porta serial
+    Serial.println("New Client.");          // imprimir uma mensagem na porta serial
     String currentLine = "";                // faça uma string para conter os dados de entrada do cliente
     while (client.connected() && currentTime - previousTime <= timeoutTime) {  // faz um loop enquanto o cliente está conectado
       currentTime = millis();
@@ -23,6 +29,9 @@ void loop () {
             client.println("Connection: close");
             client.println();
 
+
+
+
             // Verifica o caracter enviado pelo html (GET)********************************
 
             //**************************************************
@@ -31,6 +40,10 @@ void loop () {
               digitalWrite(Led, Status_Led);
             }
 
+
+
+
+
             // DEFINIÇÕES - CORPO - CÓDIGO PÁGINA HTML *****************************************************
 
             //**************************************************
@@ -38,7 +51,8 @@ void loop () {
             client.println("<!DOCTYPE html><html>");
             client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
             client.println("<link rel=\"icon\" href=\"data:,\">");
-            client.println("<title> WiFi Lora </title>");                     // Titulo do topo da Pagina
+            client.println("<title> FK SOLUTIONS </title>");                     // Titulo do topo da Pagina
+
 
             //**************************************************
             // CSS para estilizar os botões e Pagina
@@ -47,9 +61,11 @@ void loop () {
             client.println("text-decoration: none; font-size: 20px; margin: 2px; cursor: pointer;}");
             client.println(".button2 {  background-color: #555555;}</style></head>");
 
+
             //**************************************************
             // Título da página da web
-            client.println("<body>    <h1>WiFi LoRa</h1> <h3> Web Server</h3>");
+            client.println("<body>    <h1>Fk Solutions</h1> <h3> Web Server</h3>");
+
 
             // Atualização do HTML ************************************************
             if (Status_Led) {
@@ -57,14 +73,23 @@ void loop () {
             } else {
               client.print("<a href=\"/L1\"><button class=\"button button2\">LED-OFF</button></a>");
             }
+
+
+
+
            
             client.println("<P>");
 
-            client.println("Wifi LoRa a Solucao em Automacao");
+            client.println("Fk Solutions a Solucao em Automacao");
             client.println("<P>");
 
 
             client.println("</body></html>");
+
+
+
+
+
 
             client.println();                     // A resposta HTTP termina com outra linha em branco:
             break;                                // interromper o loop while:
@@ -80,8 +105,9 @@ void loop () {
     header = "";
     // fecha a conexão:
     client.stop();
-    Serial.println("Cliente Desconectado.");
+    Serial.println("Client Disconnected.");
     Serial.println("------------------------------------------------------------");
   }
+
 
 }
