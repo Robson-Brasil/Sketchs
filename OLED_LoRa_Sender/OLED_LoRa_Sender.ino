@@ -13,7 +13,7 @@
 #define RST     14   // GPIO14 -- SX127x's RESET
 #define DI00    26   // GPIO26 -- SX127x's IRQ(Interrupt Request)
 
-#define sensor1 13    //pino digital do sensor de umidade
+#define sensor1 36    //pino digital do sensor de umidade
 
 #define BAND    915E6  //Frequencia do radio - podemos utilizar ainda : 433E6, 868E6, 915E6
 
@@ -30,7 +30,7 @@ SSD1306 display(0x3c, 4, 15); //construtor do objeto que controlaremos o display
 void setup()
 {  
   //inicia serial com 9600 bits por segundo
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   //configura pino digital do sensor como entrada
   pinMode(sensor1, INPUT_PULLUP);

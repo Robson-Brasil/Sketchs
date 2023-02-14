@@ -3,7 +3,7 @@
 // Versão : 15
 // Última Modificação : 05/07/2020
 
-const int TRIG = 3, ECHO = 2, buzzer = 13;
+const int TRIG = 22, ECHO = 23, buzzer = 2;
 unsigned int intervalo, distancia;
 
 void setup() {

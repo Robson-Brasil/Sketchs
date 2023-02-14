@@ -12,7 +12,7 @@
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
 #include <OneWire.h>
-#include <DallasTemperature.h>
+//#include <DallasTemperature.h>
 
 char auth[] = "WW7eZUxja-yaJ04fANp6KF-z0N1K63Jg";
 
@@ -24,7 +24,7 @@ char pass[] = "RodrigoValRobson2021"; // Enter Your Passwword
 BlynkTimer timer;
 
 DHTesp dht;
-int LDR = 13;
+int LDR = 37;
  
 float currentTemp;
 float currentHumidity;
@@ -50,7 +50,7 @@ void displayReadingsOnOled() {
     
 void setup()
 {
-  dht.setup(17, DHTesp::DHT11);
+  dht.setup(36, DHTesp::DHT11);
    
   currentTemp = dht.getTemperature();
   currentHumidity = dht.getHumidity();
