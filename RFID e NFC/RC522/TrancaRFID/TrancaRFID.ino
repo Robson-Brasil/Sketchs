@@ -7,20 +7,23 @@
 
 // Definiremos o id que sera liberado o acesso
 
-#define ID "09 F7 30 31"
+#define ID1 "62 92 7C 1C"
+#define ID2 "2D CA 08 1C"
+//String RFIDouNFC1 = "62 92 7C 1C";
+//String RFIDouNFC2 = "2D CA 08 1C";
+//String RFIDouNFC3 = "CA 75 DD 23";
+//String RFIDouNFC4 = "XX XX XX XX";
 
 //define alguns pinos do esp32 que serao conectados aos modulos e componentes
 #define LedVerde 26
-#define LedVermelho 12
-#define tranca 2
-#define buzzer 15
-#define SS_PIN 14
-#define RST_PIN 27
-
-
+#define LedVermelho 27
+#define tranca 13
+#define buzzer 17
+#define SS_PIN 5
+#define RST_PIN 2
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // define os pinos de controle do modulo de leitura de cartoes RFID
-LiquidCrystal_I2C lcd(0x27, 16, 2); // define informacoes do lcd como o endereço I2C (0x27) e tamanho do mesmo
+LiquidCrystal_I2C lcd(0x27, 20, 4); // define informacoes do lcd como o endereço I2C (0x27) e tamanho do mesmo
 
 void setup()
 {
@@ -72,13 +75,13 @@ Serial.println();
   conteudo.toUpperCase();                      // deixa as letras da string todas maiusculas
 
 
-  if (conteudo.substring(1) == ID){ // verifica se o ID do cartao lido tem o mesmo ID do cartao que queremos liberar o acesso
+  if (conteudo.substring(1) == ID1){ // verifica se o ID do cartao lido tem o mesmo ID do cartao que queremos liberar o acesso
 
       digitalWrite(LedVerde, HIGH);            // ligamos o led verde
       lcd.clear();                             // limpamos oque havia sido escrito no lcd
       lcd.print("Acesso Liberado");            // informamos pelo lcd que a tranca foi aberta
 
-      digitalWrite(tranca, HIGH);              //abrimos a tranca por 5 segundos
+      digitalWrite(tranca, LOW);              //abrimos a tranca por 5 segundos
 
       for(byte s = 5; s > 0; s--){             //vai informando ao usuario quantos segundos faltao para a tranca ser fechada
         lcd.setCursor(8,1);
@@ -86,13 +89,13 @@ Serial.println();
         delay(1000);
       }
 
-      digitalWrite(tranca, LOW);               // fecha a tranca
+      digitalWrite(tranca, HIGH);               // fecha a tranca
       digitalWrite(LedVerde, LOW);             // e desliga o led
       lcd.clear();                             // limpa os caracteres q estao escritos no lcd
 
   }else{                                       // caso o cartao lido nao foi registrado
 
-    digitalWrite(LedVermelho, HIGH);           // vamos ligar o led vermelho
+    digitalWrite(LedVermelho, LOW);           // vamos ligar o led vermelho
 
     for(byte s = 5; s > 0; s--){               // uma contagem / espera para poder fazer uma nova leitura
 
@@ -110,7 +113,7 @@ Serial.println();
           digitalWrite(buzzer, LOW);
   
       }
-        digitalWrite(LedVermelho, LOW);         // desliga o led vermelho
+        digitalWrite(LedVermelho, HIGH);         // desliga o led vermelho
         lcd.clear();                            // limpa as informacoes do lcd
     }
   
